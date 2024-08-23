@@ -1,0 +1,12 @@
+---
+- name: Executar 
+  hosts: all
+  become: yes
+  tasks:
+    - name: Executar ifconfig
+      command: cd /var/www/html/iptell && git pull
+      register: gitpull_output
+
+    - name: gitpull
+      debug:
+        msg: "Informações de rede: {{ gitpull_output.stdout }}"
