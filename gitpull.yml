@@ -1,12 +1,12 @@
 ---
-- name: Executar 
+- name: Executar Git Pull
   hosts: all
   become: yes
   tasks:
-    - name: Executar ifconfig
-      command: cd /var/www/html/iptell && git pull
+    - name: Executar
+      shell: |
+        cd /var/www/html/iptell && git pull
       register: gitpull_output
-
-    - name: gitpull
+    - name: Exibir a saída do git pull
       debug:
-        msg: "Informações de rede: {{ gitpull_output.stdout }}"
+        msg: "Saída do git pull: {{ gitpull_output.stdout }}"
