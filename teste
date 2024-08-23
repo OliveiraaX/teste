@@ -1,0 +1,12 @@
+---
+- name: ifconfig
+  hosts: todos
+  become: yes  # 
+  tasks:
+    - name: Executar ifconfig e capturar a saída
+      command: ifconfig
+      register: ifconfig_output
+
+    - name: Saída
+      debug:
+        msg: "{{ ifconfig_output.stdout }}"
