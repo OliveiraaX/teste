@@ -5,10 +5,12 @@
 
   tasks:
     - name: Atualizar o repositório
-      shell: git pull
+      command: git pull
+      args:
+        chdir: /var/www/html/iptell/
       register: pull_result
 
     - name: Verificar se a atualização foi interrompida
       fail:
-        msg: Git checkout 
+        msg: "Git pull falhou. Verifique o diretório do repositório."
       when: pull_result.rc != 0
