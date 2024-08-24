@@ -1,0 +1,15 @@
+---
+- name: Verificar e instalar php-curl
+  hosts: all
+  become: yes
+  tasks:
+    - name: Verificar se o php-curl está instalado
+      shell: dpkg -s php-curl | grep "Status: install ok installed"
+      register: php_curl_installed
+      ignore_errors: yes
+
+    - name: Instalar php-curl se não estiver instalado
+      apt:
+        name: php-curl
+        state: present
+      when: php_curl_installed.rc != 0
