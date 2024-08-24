@@ -10,12 +10,12 @@
 
     - name: Remover todos os processos PM2 (exceto Hub e Integração)
       shell: pm2 delete {{ item }}
-      loop: "{{ pm2_list.stdout_lines | select('search', '^(?!.*(Hub|Integração)).*') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | list }}"
+      loop: "{{ pm2_list.stdout_lines | select('search', '^(?!.*(Hub|Integração)).*') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | select('match', '^\\d+$') | list }}"
       when: "'Hub' not in pm2_list.stdout and 'Integração' not in pm2_list.stdout"
       changed_when: true
 
     - name: Remover processos específicos (se necessário)
       shell: pm2 delete {{ item }}
-      loop: "{{ pm2_list.stdout_lines | select('search', '(Hub|Integração)') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | list }}"
+      loop: "{{ pm2_list.stdout_lines | select('search', '(Hub|Integração)') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | select('match', '^\\d+$') | list }}"
       when: "'Hub' in pm2_list.stdout or 'Integração' in pm2_list.stdout"
       changed_when: true
