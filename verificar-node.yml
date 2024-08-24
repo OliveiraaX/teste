@@ -10,15 +10,9 @@
 
     - name: Extrair partes da versão do Node.js
       set_fact:
-        # Remover o prefixo 'v' e dividir a versão em partes
-        version_parts: >
-          {{
-            node_version.stdout | regex_replace('^v', '') | 
-            regex_replace('\\..*$', '') |  # Remove tudo depois do primeiro ponto para obter a versão principal
-            split('.') | map('int') | list 
-          }}
-
-    - name: Definir a versão do Node.js
+        version_parts: "{{ node_version.stdout | regex_replace('^v', '') | split('.') | map('int') | list }}"
+    
+    - name: Definir as partes da versão
       set_fact:
         major_version: "{{ version_parts[0] }}"
         minor_version: "{{ version_parts[1] }}"
@@ -37,5 +31,5 @@
         msg: "A versão do Node.js é {{ node_version.stdout }}. Está atualizada."
       when: >
         major_version > 18 or
-        (major_version == 18 and minor_version > 10) or
+        (major_version == 18 and minor_version >= 10) or
         (major_version == 18 and minor_version == 10 and patch_version >= 0)
