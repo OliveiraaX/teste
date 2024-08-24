@@ -4,7 +4,7 @@
   become: yes
   tasks:
     - name: Executar o comando npm run production
-      shell: npm run production
+      shell: cd /var/www/html/iptell && npm run production
       register: npm_run_result
 
     - name: Verificar se o comando de produção foi bem-sucedido
