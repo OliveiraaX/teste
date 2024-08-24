@@ -1,0 +1,25 @@
+---
+- name: Atualizar Node.js
+  hosts: all
+  become: yes
+  tasks:
+    - name: Adicionar repositório NodeSource para Node.js
+      shell: |
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+      register: add_nodesource_result
+      changed_when: "'Nodesource' in add_nodesource_result.stdout"
+
+    - name: Atualizar o Node.js
+      apt:
+        name: nodejs
+        state: latest
+      register: node_update_result
+      when: add_nodesource_result.changed
+
+    - name: Verificar versão do Node.js
+      shell: node -v
+      register: node_version
+
+    - name: Exibir versão do Node.js
+      debug:
+        msg: "Versão {{ node_version.stdout }}"
