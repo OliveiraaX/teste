@@ -10,5 +10,5 @@
 
     - name: Verificar se a versão do Node.js é maior ou igual a 18
       fail:
-        msg: "A versão do Node.js é inferior a 18. A versão atual é: {{ node_version.stdout }}"
+        msg: "Versão {{ node_version.stdout }}"
       when: node_version.stdout | regex_search('^v?(1[0-7]|[1-9][0-9]*)(\.)') is defined
