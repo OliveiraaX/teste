@@ -6,28 +6,15 @@
     - name: Listar processos PM2
       command: pm2 ls
       register: pm2_list
-      changed_when: false  # O comando 'pm2 ls' não deve alterar o sistema
+      changed_when: false
 
     - name: Remover todos os processos PM2 (exceto Hub e Integração)
       command: pm2 delete {{ item }}
       loop: "{{ pm2_list.stdout_lines | select('search', '^(?!.*(Hub|Integração)).*') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | list }}"
       when: pm2_list.stdout | regex_search('(Hub|Integração)') == false
-      changed_when: true  # A exclusão de processos deve ser considerada uma mudança
-
+      changed_when: true 
     - name: Remover processos específicos (se necessário)
       command: pm2 delete {{ item }}
       loop: "{{ pm2_list.stdout_lines | select('search', '(Hub|Integração)') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | list }}"
       when: pm2_list.stdout | regex_search('(Hub|Integração)') == true
-      changed_when: true  # A exclusão de processos deve ser considerada uma mudança
-
-    - name: Reiniciar os processos em produção
-      command: npm run production
-      args:
-        chdir: /var/www/html/iptell/
-      register: npm_run_result
-      changed_when: true  # O comando 'npm run production' deve ser considerado uma mudança
-
-    - name: Verificar se o comando de produção foi bem-sucedido
-      fail:
-        msg: "Falha ao executar o comando 'npm run production'. Erro: {{ npm_run_result.stderr }} Saída: {{ npm_run_result.stdout }}"
-      when: npm_run_result.rc != 0
+      changed_when: true  
