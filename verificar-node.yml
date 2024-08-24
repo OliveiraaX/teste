@@ -14,20 +14,17 @@
 
     - name: Extrair partes da versão do Node.js
       set_fact:
-        node_version_parts: >
-          {{
-            node_version.stdout | regex_replace('^v', '') | 
-            split('.') | 
-            map('int') | 
-            list
-          }}
+        node_version_string: "{{ node_version.stdout | regex_replace('^v', '') }}"
+        major: "{{ node_version_string.split('.')[0] | int }}"
+        minor: "{{ node_version_string.split('.')[1] | int }}"
+        patch: "{{ node_version_string.split('.')[2] | int }}"
 
     - name: Verificar se a versão do Node.js é maior ou igual a 18.10.0
       fail:
         msg: "A versão do Node.js é inferior a 18.10.0. A versão atual é: {{ node_version.stdout }}"
       when: >
         {{
-          (node_version_parts[0] < 18) or
-          (node_version_parts[0] == 18 and node_version_parts[1] < 10) or
-          (node_version_parts[0] == 18 and node_version_parts[1] == 10 and node_version_parts[2] < 0)
+          (major < 18) or
+          (major == 18 and minor < 10) or
+          (major == 18 and minor == 10 and patch < 0)
         }}
