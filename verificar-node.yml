@@ -1,0 +1,28 @@
+---
+- name: Verificar versão do Node.js
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Executar comando
+      shell: node -v
+      register: node_version
+
+    - name: Extrair versão.
+      set_fact:
+        node_version_number: "{{ node_version.stdout | regex_replace('^v', '') | regex_replace('^(\d+)\.(\d+)\.(\d+).*$', '\\1.\\2.\\3') }}"
+
+    - name: Verificar se é superior a 18.10.0
+      fail:
+        msg: "v.{{ node_version.stdout }}. É necessário atualizar para a versão 18.10.0 ou superior."
+      when: >
+        node_version_number | regex_search('^(1[9-9]|[2-9][0-9]*)\.\d+\.\d+$') is not defined or
+        (node_version_number | regex_search('^(18)\.(1[1-9]|[1-9]\d*)\.\d+$') is not defined) or
+        (node_version_number | regex_search('^(18)\.(10)\.\d+$') is not defined)
+
+    - name: Exibir versão do Node.js
+      debug:
+        msg: "v.{{ node_version.stdout }}. Está atualizada."
+      when: >
+        node_version_number | regex_search('^(18)\.(1[1-9]|[1-9]\d*)\.\d+$') is defined or
+        node_version_number | regex_search('^(18)\.(10)\.[1-9]\d*$') is defined
