@@ -5,6 +5,8 @@
   tasks:
     - name: Executar as migrações
       command: npm run migrations:latest
+      args:
+        chdir: /var/www/html/iptell/
       register: migrations_result
       ignore_errors: yes
 
