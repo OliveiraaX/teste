@@ -3,20 +3,8 @@
   hosts: all
   become: yes
   tasks:
-    - name: Garantir que Node.js e npm estejam instalados
-      apt:
-        name:
-          - nodejs
-          - npm
-        state: present
-
-    - name: Instalar pm2 globalmente
-      npm:
-        name: pm2
-        global: yes
-
     - name: Executar o comando npm run production
-      command: npm run production
+      shell: npm run production
       register: npm_run_result
 
     - name: Verificar se o comando de produção foi bem-sucedido
