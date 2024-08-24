@@ -9,31 +9,40 @@
       register: is_git_repo
       failed_when: false
 
-    - name: Mudar para o diretório do iptell e executar o comando git log
+    - name: Mudar para o diretório do iptell e obter a tag mais recente
       shell: |
-        cd /var/www/html/iptell/ && git log -1 --pretty=oneline --abbrev-commit
+        cd /var/www/html/iptell && git describe --tags
       when: is_git_repo.rc == 0
-      register: git_log_output
+      register: git_tag_output
       failed_when: false
 
     - name: Exibir mensagem de erro se não for um repositório Git
       debug:
-        msg: "O diretório /var/www/html/iptell/ não é um repositório Git."
+        msg: "O diretório /var/www/html/iptell não é um repositório Git."
       when: is_git_repo.rc != 0
 
-    - name: Extrair a versão da tag usando regex
+    - name: Debug da saída do comando git describe
+      debug:
+        msg: "Saída do comando git describe: {{ git_tag_output.stdout }}"
+      when: git_tag_output is defined
+
+    - name: Extrair a versão usando regex
       set_fact:
-        version: "{{ git_log_output.stdout | regex_search('tag: (\\d+\\.\\d+\\.\\d+)') }}"
+        version: "{{ git_tag_output.stdout | regex_search('^(\\d+\\.\\d+\\.\\d+)') }}"
+
+    - name: Debug da versão extraída
+      debug:
+        msg: "Versão extraída: {{ version }}"
+      when: version is defined
 
     - name: Comparar a versão com o limite
       block:
         - name: A versão é maior ou igual a 2.25
           debug:
-            msg: A versão atual é {{ version.0 }}. Não é necessária atualização.
-          when: version.0 | int >= 225
+            msg: "A versão atual é {{ version }}. Não é necessária atualização."
+          when: version is defined and version | regex_replace('\\.', '') | int >= 225
 
         - name: A versão é menor que 2.25
           debug:
-            msg: A versão atual é {{ version.0 }}. É necessária uma atualização.
-          when: version.0 | int < 225
-      when: version is defined
+            msg: "A versão atual é {{ version }}. É necessária uma atualização."
+          when: version is defined and version | regex_replace('\\.', '') | int < 225
