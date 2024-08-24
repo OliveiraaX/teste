@@ -1,0 +1,24 @@
+---
+- name: Instalar pacotes NPM
+  hosts: all
+  become: yes
+  tasks:
+    - name: Verificar e instalar pacotes NPM
+      command: npm ci
+      register: npm_install_result
+      ignore_errors: yes
+
+    - name: Verificar se a instalação foi bem-sucedida
+      fail:
+        msg: "Falha ao instalar os pacotes NPM. Erro: {{ npm_install_result.stderr }} Saída: {{ npm_install_result.stdout }}"
+      when: npm_install_result.rc != 0
+
+    - name: Instalar todos os serviços
+      command: npm run install:all
+      register: install_all_result
+      ignore_errors: yes
+
+    - name: Verificar se a instalação dos serviços foi bem-sucedida
+      fail:
+        msg: "Falha ao instalar os serviços. Erro: {{ install_all_result.stderr }} Saída: {{ install_all_result.stdout }}"
+      when: install_all_result.rc != 0
