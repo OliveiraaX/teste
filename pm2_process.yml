@@ -22,6 +22,8 @@
 
     - name: Reiniciar os processos em produção
       command: npm run production
+      args:
+        chdir: /var/www/html/iptell/
       register: npm_run_result
       changed_when: true  # O comando 'npm run production' deve ser considerado uma mudança
 
