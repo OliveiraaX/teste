@@ -1,0 +1,12 @@
+---
+- name: Mudar para o diretório e exibir o diretório atual
+  hosts: seu_grupo_de_hosts
+  become: yes  # Se você precisar de permissões de superusuário
+  tasks:
+    - name: Mudar para o diretório e exibir o diretório atual
+      shell: cd /var/www/html/iptell && pwd
+      register: result
+
+    - name: Exibir o diretório atual
+      debug:
+        msg: "O diretório atual é: {{ result.stdout }}"
