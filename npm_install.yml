@@ -1,20 +1,31 @@
 ---
-- name: Instalar pacotes NPM
+- name: Gerenciar pacotes NPM e serviços
   hosts: all
   become: yes
+  vars:
+    project_dir: /var/www/html/iptell/
   tasks:
-    - name: Verificar e instalar pacotes NPM
-      command: npm ci
+    - name: Certificar-se de que o diretório do projeto existe
+      ansible.builtin.file:
+        path: "{{ project_dir }}"
+        state: directory
+
+    - name: Instalar pacotes NPM
+      command: npm i
+      args:
+        chdir: "{{ project_dir }}"
       register: npm_install_result
       ignore_errors: yes
 
-    - name: Verificar se a instalação foi bem-sucedida
+    - name: Verificar se a instalação dos pacotes NPM foi bem-sucedida
       fail:
         msg: "Falha ao instalar os pacotes NPM. Erro: {{ npm_install_result.stderr }} Saída: {{ npm_install_result.stdout }}"
       when: npm_install_result.rc != 0
 
     - name: Instalar todos os serviços
       command: npm run install:all
+      args:
+        chdir: "{{ project_dir }}"
       register: install_all_result
       ignore_errors: yes
 
