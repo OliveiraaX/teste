@@ -1,0 +1,10 @@
+---
+- name: Instalar php-curl se não estiver instalado
+  hosts: all
+  become: yes
+  tasks:
+    - name: Instalar php-curl
+      apt:
+        name: php-curl
+        state: present
+      when: not php_curl_installed
