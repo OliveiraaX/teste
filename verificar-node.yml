@@ -8,28 +8,7 @@
       shell: node -v
       register: node_version
 
-    - name: Extrair partes da versão do Node.js
-      set_fact:
-        version_parts: "{{ node_version.stdout | regex_replace('^v', '') | split('.') | map('int') | list }}"
-    
-    - name: Definir as partes da versão
-      set_fact:
-        major_version: "{{ version_parts[0] }}"
-        minor_version: "{{ version_parts[1] }}"
-        patch_version: "{{ version_parts[2] }}"
-
-    - name: Verificar se a versão do Node.js é menor que 18.10.0
+    - name: Verificar se a versão do Node.js é maior ou igual a 18
       fail:
-        msg: "A versão do Node.js é {{ node_version.stdout }}. É necessário atualizar para a versão 18.10.0 ou superior."
-      when: >
-        major_version < 18 or
-        (major_version == 18 and minor_version < 10) or
-        (major_version == 18 and minor_version == 10 and patch_version < 0)
-
-    - name: Exibir versão do Node.js
-      debug:
-        msg: "A versão do Node.js é {{ node_version.stdout }}. Está atualizada."
-      when: >
-        major_version > 18 or
-        (major_version == 18 and minor_version >= 10) or
-        (major_version == 18 and minor_version == 10 and patch_version >= 0)
+        msg: "A versão do Node.js é inferior a 18. A versão atual é: {{ node_version.stdout }}"
+      when: (node_version.stdout | regex_replace('^v', '') | regex_replace('\\..*', '') | int) < 18
