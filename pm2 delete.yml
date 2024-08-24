@@ -3,19 +3,28 @@
   hosts: all
   become: yes
   tasks:
-    - name: Listar processos PM2
+    - name: Listar processos PM2 antes da remoção
       shell: pm2 ls
-      register: pm2_list
+      register: pm2_list_before
       changed_when: false
 
-    - name: Remover todos os processos PM2 (exceto Hub e Integração)
+    - name: Remover processos específicos
       shell: pm2 delete {{ item }}
-      loop: "{{ pm2_list.stdout_lines | select('search', '^(?!.*(Hub|Integração)).*') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | select('match', '^\\d+$') | list }}"
-      when: "'Hub' not in pm2_list.stdout and 'Integração' not in pm2_list.stdout"
-      changed_when: true
+      loop:
+        - iptell-api
+        - nova-tela-agente
+        - novo-backend
+      ignore_errors: yes 
 
-    - name: Remover processos específicos (se necessário)
-      shell: pm2 delete {{ item }}
-      loop: "{{ pm2_list.stdout_lines | select('search', '(Hub|Integração)') | map('regex_replace', '.*\\s(\\d+)\\s.*', '\\1') | select('match', '^\\d+$') | list }}"
-      when: "'Hub' in pm2_list.stdout or 'Integração' in pm2_list.stdout"
-      changed_when: true
+    - name: Listar processos PM2 após a remoção
+      shell: pm2 ls
+      register: pm2_list_after
+      changed_when: false
+
+    - name: Exibir lista de processos PM2 antes da remoção
+      debug:
+        msg: "Processos PM2 antes da remoção:\n{{ pm2_list_before.stdout }}"
+
+    - name: Exibir lista de processos PM2 após a remoção
+      debug:
+        msg: "Processos PM2 após a remoção:\n{{ pm2_list_after.stdout }}"
