@@ -1,0 +1,13 @@
+---
+- name: Restart PM2
+  hosts: all
+  become: yes
+  tasks:
+    - name: Reiniciar todos os processos PM2
+      shell: pm2 restart all
+      register: pm2_logs
+      ignore_errors: yes
+
+    - name: Imprimir logs
+      debug:
+        msg: "{{ pm2_logs.stdout }}"
