@@ -1,0 +1,14 @@
+---
+- name: Atualizar repositório e verificar interrupções
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Atualizar o repositório
+      shell: git pull
+      register: pull_result
+
+    - name: Verificar se a atualização foi interrompida
+      fail:
+        msg: Git checkout 
+      when: pull_result.rc != 0
