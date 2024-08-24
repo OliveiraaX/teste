@@ -18,7 +18,7 @@
 
     - name: Exibir mensagem de erro se não for um repositório Git
       debug:
-        msg: "O diretório /var/www/html/iptell não é um repositório Git."
+        msg: "O diretório /var/www/html/iptell/ não é um repositório Git."
       when: is_git_repo.rc != 0
 
     - name: Debug da saída do comando git describe
