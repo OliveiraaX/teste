@@ -1,0 +1,14 @@
+---
+- name: Executar migrações
+  hosts: all
+  become: yes
+  tasks:
+    - name: Executar as migrações
+      command: npm run migrations:latest
+      register: migrations_result
+      ignore_errors: yes
+
+    - name: Verificar se as migrações foram bem-sucedidas
+      fail:
+        msg: "Falha ao executar as migrações. Erro: {{ migrations_result.stderr }} Saída: {{ migrations_result.stdout }}"
+      when: migrations_result.rc != 0
