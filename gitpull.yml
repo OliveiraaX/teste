@@ -1,12 +1,28 @@
 ---
-- name: Executar Git Pull
+- name: Verificar versão do Git 
   hosts: all
   become: yes
+
   tasks:
-    - name: Executar
-      shell: |
-        cd /var/www/html/iptell && git pull
-      register: gitpull_output
-    - name: Exibir a saída do git pull
-      debug:
-        msg: "Saída do git pull: {{ gitpull_output.stdout }}"
+    - name: Ir para pasta do iptell
+      shell: cd /var/www/html/iptell
+
+    - name: Executar o comando git log e capturar a saída
+      shell: git log -1 --pretty=oneline --abbrev-commit
+      register: git_log_output
+
+    - name: Extrair a versão da tag usando regex
+      set_fact:
+        version: "{{ git_log_output.stdout | regex_search('tag: (\\d+\\.\\d+\\.\\d+)') }}"
+
+    - name: Comparar a versão com o limite
+      when: version.0 | int >= 225
+      block:
+        - name: A versão é maior ou igual a 2.25
+          debug:
+            msg: A versão atual é {{ version.0 }}. Não é necessária atualização.
+      when: version.0 | int < 225
+      block:
+        - name: A versão é menor que 2.25
+          debug:
+            msg: A versão atual é {{ version.0 }}. É necessária uma atualização.
