@@ -1,5 +1,5 @@
 ---
-- name: Restart PM2
+- name: Gerenciar PM2
   hosts: all
   become: yes
   tasks:
@@ -8,6 +8,11 @@
       register: pm2_logs
       ignore_errors: yes
 
-    - name: Imprimir logs
+    - name: Imprimir logs do reinício
       debug:
         msg: "{{ pm2_logs.stdout }}"
+
+    - name: Sincronizar lista de processos PM2
+      shell: pm2 save
+      when: pm2_logs.stdout is search('Current process list is not synchronized')
+      ignore_errors: yes
