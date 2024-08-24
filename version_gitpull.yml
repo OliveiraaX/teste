@@ -4,25 +4,36 @@
   become: yes
 
   tasks:
-    - name: Ir para pasta do iptell
-      shell: cd /var/www/html/iptell
+    - name: Verificar se o diretório é um repositório Git
+      command: "test -d /var/www/html/iptell/.git"
+      register: is_git_repo
+      failed_when: false
 
-    - name: Executar o comando git log e capturar a saída
-      shell: git log -1 --pretty=oneline --abbrev-commit
+    - name: Mudar para o diretório do iptell e executar o comando git log
+      shell: |
+        cd /var/www/html/iptell/ && git log -1 --pretty=oneline --abbrev-commit
+      when: is_git_repo.rc == 0
       register: git_log_output
+      failed_when: false
+
+    - name: Exibir mensagem de erro se não for um repositório Git
+      debug:
+        msg: "O diretório /var/www/html/iptell/ não é um repositório Git."
+      when: is_git_repo.rc != 0
 
     - name: Extrair a versão da tag usando regex
       set_fact:
         version: "{{ git_log_output.stdout | regex_search('tag: (\\d+\\.\\d+\\.\\d+)') }}"
 
     - name: Comparar a versão com o limite
-      when: version.0 | int >= 225
       block:
         - name: A versão é maior ou igual a 2.25
           debug:
             msg: A versão atual é {{ version.0 }}. Não é necessária atualização.
-      when: version.0 | int < 225
-      block:
+          when: version.0 | int >= 225
+
         - name: A versão é menor que 2.25
           debug:
             msg: A versão atual é {{ version.0 }}. É necessária uma atualização.
+          when: version.0 | int < 225
+      when: version is defined
