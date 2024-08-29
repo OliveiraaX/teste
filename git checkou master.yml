@@ -8,10 +8,12 @@
       register: checkout_master
       ignore_errors: yes
 
-    - name: Comando de saída
+    - name: Exibir comando e saída do checkout inicial
       debug:
-        msg: "{{ checkout_master.stdout }}"
-
+        msg: |
+          Comando: cd /var/www/html/iptell/ && git checkout .
+          Saída: "{{ checkout_master.stdout }}"
+    
     - name: Verificar se o branch
       set_fact:
         branch_up_to_date: >
@@ -26,8 +28,11 @@
       shell: git checkout master
       when: not branch_up_to_date
       register: final_checkout
+      ignore_errors: yes
 
-    - name: Exibir status final do checkout
+    - name: Exibir comando e saída do checkout master
       debug:
-        msg: "Status final do checkout: {{ final_checkout.stdout }}"
+        msg: |
+          Comando: git checkout master
+          Saída: "{{ final_checkout.stdout }}"
       when: not branch_up_to_date
