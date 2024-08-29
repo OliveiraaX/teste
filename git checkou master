@@ -1,0 +1,32 @@
+- name: Checkout do Git
+  hosts: all
+  become: yes
+  tasks:
+    - name: Realizar checkout inicial e verificar branch
+      shell: git checkout
+      register: checkout_master
+      ignore_errors: yes
+
+    - name: Comando de saída
+      debug:
+        msg: "{{ checkout_master.stdout }}"
+
+    - name: Verificar se o branch
+      set_fact:
+        branch_up_to_date: >
+          {% if "Already on 'master'" in checkout_master.stdout and
+             "Your branch is up to date with 'origin/master'" in checkout_master.stdout %}
+            true
+          {% else %}
+            false
+          {% endif %}
+
+    - name: Realizar checkout Master se necessário
+      shell: git checkout master
+      when: not branch_up_to_date
+      register: final_checkout
+
+    - name: Exibir status final do checkout
+      debug:
+        msg: "Status final do checkout: {{ final_checkout.stdout }}"
+      when: not branch_up_to_date
