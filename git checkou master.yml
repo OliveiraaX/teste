@@ -2,6 +2,9 @@
   hosts: all
   become: yes
   tasks:
+    - name: Mudar para o diretório de trabalho
+      shell: cd /var/www/html/iptell
+
     - name: Realizar checkout inicial e verificar branch
       shell: git checkout
       register: checkout_master
