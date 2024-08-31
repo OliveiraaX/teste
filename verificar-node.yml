@@ -7,7 +7,7 @@
     - name: Executar comando node -v
       shell: node -v
       register: node_version
-
+      msg: "v.{{ node_version.stdout }}"
     - name: Verificar se a versão do Node.js é maior ou igual a 18
       fail:
         msg: "v.{{ node_version.stdout }}"
