@@ -1,6 +1,8 @@
 ---
 - name: Verificar node
   hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   become: yes
 
   tasks:
@@ -8,7 +10,7 @@
       shell: node -v
       register: node_version
 
-    - name: verificar se a versão é maior que 18.
+    - name: Verificar se a versão é maior que 18.
       fail:
         msg: "{{ node_version.stdout }}. É necessário atualizar para a versão 18 ou superior."
       when: node_version.stdout | regex_search('^v(18|[2-9][0-9])\\.\\d+\\.\\d+$') == false
