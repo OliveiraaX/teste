@@ -9,7 +9,7 @@
       shell: node -v
       register: node_version
 
-    - name: Verificar se a versão é maior que 18.
+    - name: Se a versão for menor que 18 Falhar.
       fail:
         msg: "{{ node_version.stdout }}. É necessário atualizar para a versão 18 ou superior."
       when: node_version.stdout | regex_search('^v(18|[2-9][0-9])\\.\\d+\\.\\d+$') == false
