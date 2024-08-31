@@ -1,5 +1,5 @@
 ---
-- name: Verificar versão do Git 
+- name: VERIFICAR VERSÃO GIT PULL
   hosts: all
   become: yes
 
@@ -26,7 +26,7 @@
         msg: "Saída do comando git describe: {{ git_tag_output.stdout }}"
       when: git_tag_output is defined
 
-    - name: Extrair a versão usando regex
+    - name: EXTRAIR VERSÃO
       set_fact:
         version: "{{ git_tag_output.stdout | regex_search('^(\\d+\\.\\d+\\.\\d+)') }}"
 
@@ -35,11 +35,11 @@
         msg: "Versão extraída: {{ version }}"
       when: version is defined
 
-    - name: Comparar a versão com o limite
+    - name: COMPARAR VERSÃO
       block:
         - name: A versão é maior ou igual a 2.25
           debug:
-            msg: "A versão atual é {{ version }}. Não é necessária atualização."
+            msg: "Versão {{ version }}. Não é necessária atualização."
           when: version is defined and version | regex_replace('\\.', '') | int >= 225
 
         - name: A versão é menor que 2.25
