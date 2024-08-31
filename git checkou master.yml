@@ -2,23 +2,28 @@
   hosts: all
   become: yes
   tasks:
-    - name: Realizar checkout inicial e verificar branch
-      shell: | 
-        cd /var/www/html/iptell/ && git checkout .
-      register: checkout_master
+    - name: Navegar para o diretório do projeto
+      command: cd /var/www/html/iptell/
+      args:
+        chdir: /var/www/html/iptell/
+
+    - name: Verificar o estado do repositório Git
+      shell: git status
+      register: git_status
       ignore_errors: yes
 
-    - name: Exibir comando e saída do checkout inicial
+    - name: Exibir comando e saída da verificação do estado do repositório
       debug:
         msg: |
-          Comando: cd /var/www/html/iptell/ && git checkout .
-          Saída: "{{ checkout_master.stdout }}"
-    
-    - name: Verificar se o branch
+          Comando: git status
+          Saída: "{{ git_status.stdout }}"
+      ignore_errors: yes
+
+    - name: Verificar se o branch é master e está atualizado
       set_fact:
         branch_up_to_date: >
-          {% if "Already on 'master'" in checkout_master.stdout and
-             "Your branch is up to date with 'origin/master'" in checkout_master.stdout %}
+          {% if "On branch master" in git_status.stdout and
+             "Your branch is up to date with 'origin/master'" in git_status.stdout %}
             true
           {% else %}
             false
@@ -26,6 +31,8 @@
 
     - name: Realizar checkout Master se necessário
       shell: git checkout master
+      args:
+        chdir: /var/www/html/iptell/
       when: not branch_up_to_date
       register: final_checkout
       ignore_errors: yes
