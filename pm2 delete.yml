@@ -1,5 +1,5 @@
 ---
-- name: Gerenciar processos PM2
+- name: PM2 PROCESSOS
   hosts: all
   become: yes
   tasks:
@@ -23,7 +23,7 @@
 
     - name: Exibir lista de processos PM2 antes da remoção
       debug:
-        msg: "Processos PM2 antes da remoção:\n{{ pm2_list_before.stdout }}"
+        msg: "\n{{ pm2_list_before.stdout }}"
 
     - name: Exibir lista de processos PM2 após a remoção
       debug:
