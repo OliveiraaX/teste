@@ -8,7 +8,6 @@
       args:
         chdir: /var/www/html/iptell/
       register: migrations_result
-      ignore_errors: yes
 
     - name: Verificar se as migrações foram bem-sucedidas
       fail:
