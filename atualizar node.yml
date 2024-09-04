@@ -13,14 +13,14 @@
         curl https://raw.github.com/creationix/nvm/master/install.sh | bash
       when: not pasta_nvm.stat.exists
       
-    - name: Install node and set versio
+    - name: Instalar Node
       become_user: root
       shell: |
         source /root/.nvm/nvm.sh &&  nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0 
       args:
         executable: /bin/bash
         
-    - name: Verificar versão node
+    - name: Verificar versão
       shell: node -v
       register: node_version
       changed_when: false
