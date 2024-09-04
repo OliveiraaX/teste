@@ -14,11 +14,10 @@
       when: not pasta_nvm.stat.exists
       
     - name: Carregar nvm
-      shell: source ~/.nvm/nvm.sh
+      command: source ~/.nvm/nvm.sh
       
     - name: atualizar node
-      shell: |
-        nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+      command: nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
         
     - name: Verificar versão node
       shell: node -v
