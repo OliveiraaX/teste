@@ -14,10 +14,12 @@
       when: not pasta_nvm.stat.exists
    
     - name: Load nvm into shell
-      shell: sudo source ~/.nvm/nvm.sh
+      become: yes
+      shell: source ~/.nvm/nvm.sh
     
     - name: atualizar node
-      shell: sudo nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+      become: yes
+      shell: nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
         
     - name: Verificar versão node
       shell: node -v
