@@ -1,15 +1,10 @@
 - name: Checkout do Git
   hosts: all
   become: yes
-  tasks:
-    - name: Navegar para o diretório do projeto
-      shell: cd /var/www/html/iptell/
-      args:
-        chdir: /var/www/html/iptell/
-        executable: /bin/bash
-        
+  tasks:        
     - name: Verificar o estado do repositório Git
-      shell: git status
+      shell: |
+         cd /var/www/html/iptell/ && git status 
       register: git_status
       ignore_errors: yes
 
