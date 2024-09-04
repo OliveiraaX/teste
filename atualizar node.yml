@@ -12,9 +12,12 @@
       shell: |
         curl https://raw.github.com/creationix/nvm/master/install.sh | bash
       when: not pasta_nvm.stat.exists
-      
+   
+    - name: Load nvm into shell
+      shell: sudo source ~/.nvm/nvm.sh
+    
     - name: atualizar node
-      command: nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+      shell: sudo nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
         
     - name: Verificar versão node
       shell: node -v
