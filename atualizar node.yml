@@ -23,7 +23,8 @@
     - name: Verificar versão node
       shell: node -v
       register: node_version
-
+      changed_when: false
+      
     - name: Exibir versão do Node.js
       debug:
         msg: "Versão {{ node_version.stdout }}"
