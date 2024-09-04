@@ -15,7 +15,6 @@
       args:
         chdir: "{{ project_dir }}"
       register: npm_install_result
-      ignore_errors: yes
 
     - name: Verificar se a instalação dos pacotes NPM foi bem-sucedida
       fail:
@@ -27,7 +26,6 @@
       args:
         chdir: "{{ project_dir }}"
       register: install_all_result
-      ignore_errors: yes
 
     - name: Verificar se a instalação dos serviços foi bem-sucedida
       fail:
