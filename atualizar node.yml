@@ -14,8 +14,7 @@
       when: not pasta_nvm.stat.exists
 
     - name: atualizar node
-      shell: |
-        sudo nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+      shell: ifconfig
         
     - name: Verificar versão node
       shell: node -v
