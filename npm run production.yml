@@ -2,6 +2,8 @@
 - name: Instalar PM2 e executar npm run production
   hosts: all
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Executar o comando npm run production
       shell: cd /var/www/html/iptell && npm run production
