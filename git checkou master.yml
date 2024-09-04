@@ -6,8 +6,8 @@
       shell: |
          cd /var/www/html/iptell/ && git status && git checkout master
       register: git_status
-
+      changed_when: false
+      
     - name: Exibir comando e saída do checkout master
       debug:
-        msg: 
-          Saída: "{{ git_status.stdout }}"
+        msg:  "{{ git_status.stdout }}"
