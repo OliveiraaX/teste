@@ -3,10 +3,11 @@
   become: yes
   tasks:
     - name: Navegar para o diretório do projeto
-      command: cd /var/www/html/iptell/
+      shell: cd /var/www/html/iptell/
       args:
         chdir: /var/www/html/iptell/
-
+        executable: /bin/bash
+        
     - name: Verificar o estado do repositório Git
       shell: git status
       register: git_status
