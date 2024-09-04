@@ -9,7 +9,8 @@
     - name: Executar comando node -v
       shell: node -v
       register: node_version
-    
+      changed_when: false
+      
     - name: Extrair a primeira e a segunda parte da versão do Node.js
       shell: |
         node -v | cut -d 'v' -f2 | cut -d '.' -f1
