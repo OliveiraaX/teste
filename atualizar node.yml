@@ -13,9 +13,6 @@
         curl https://raw.github.com/creationix/nvm/master/install.sh | bash
       when: not pasta_nvm.stat.exists
       
-    - name: Carregar nvm
-      command: source ~/.nvm/nvm.sh
-      
     - name: atualizar node
       command: nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
         
