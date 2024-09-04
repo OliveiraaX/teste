@@ -9,9 +9,22 @@
     - name: Executar comando node -v
       shell: node -v
       register: node_version
-
-    - name: SE A VERSÃO FOR MENOR QUE 18, RETORNAR FALHA
-      fail:
-        msg: "{{ node_version.stdout }}. É necessário atualizar para a versão 18 ou superior."
-      when: node_version.stdout | regex_search('^v(18|[2-9][0-9])\\.\\d+\\.\\d+$') == false
     
+    - name: Extrair a primeira e a segunda parte da versão do Node.js
+      shell: |
+        node -v | cut -d 'v' -f2 | cut -d '.' -f1
+        node -v | cut -d 'v' -f2 | cut -d '.' -f2
+      register: node_version_parts
+      changed_when: false
+
+    - name: Verificar se a versão principal do Node.js é menor que 18
+      fail:
+        msg: "A versão do Node.js é {{ node_version.stdout }}. É necessário atualizar para a versão 18 ou superior."
+      when: node_version_parts.stdout_lines[0] | int < 18
+
+    - name: Verificar se a segunda parte da versão do Node.js é menor que 17
+      fail:
+        msg: "A versão do Node.js é {{ node_version.stdout }}. A segunda parte da versão deve ser pelo menos 17."
+      when: >
+        node_version_parts.stdout_lines[0] | int <= 18 and
+        node_version_parts.stdout_lines[1] | int <= 16
