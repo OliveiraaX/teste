@@ -3,19 +3,15 @@
   hosts: all
   become: yes
   tasks:
-    - name: Adicionar repositório
+    - name: Instalar nvm 
       shell: |
-        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-      register: add_nodesource_result
-      changed_when: "'Nodesource' in add_nodesource_result.stdout"
+        curl https://raw.github.com/creationix/nvm/master/install.sh | bash
+      register: nvm_install
 
     - name: atualizar node
-      apt:
-        name: nodejs
-        state: latest
-      register: node_update_result
-      when: add_nodesource_result.changed
-
+      shell: |
+        nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+        
     - name: Verificar versão node
       shell: node -v
       register: node_version
