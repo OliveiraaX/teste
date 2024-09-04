@@ -15,7 +15,7 @@
 
     - name: atualizar node
       shell: |
-        nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
+        sudo nvm install 18.20.0 && nvm use 18.20.0 && nvm alias default 18.20.0
         
     - name: Verificar versão node
       shell: node -v
