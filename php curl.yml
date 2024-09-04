@@ -12,11 +12,4 @@
     - name: Imprimir saída do comando dpkg
       debug:
         msg: "{{ php_curl_status.stdout }}"
-
-    - name: Verificar se o php-curl está instalado
-      set_fact:
-        php_curl_installed: "{{ 'Status: install ok installed' in php_curl_status.stdout }}"
-      
-    - name: Exibir status de instalação do php-curl
-      debug:
-        msg: "O php-curl está {{ 'instalado' if php_curl_installed else 'não instalado' }}."
+        
