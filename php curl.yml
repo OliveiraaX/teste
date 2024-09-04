@@ -8,6 +8,7 @@
         dpkg -s php-curl
       register: php_curl_status
       changed_when: false
+      
     - name: Imprimir saída do comando dpkg
       debug:
         msg: "{{ php_curl_status.stdout }}"
