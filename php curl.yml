@@ -7,7 +7,6 @@
       shell: |
         dpkg -s php-curl
       register: php_curl_status
-      ignore_errors: yes
 
     - name: Imprimir saída do comando dpkg
       debug:
