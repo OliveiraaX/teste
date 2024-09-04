@@ -4,38 +4,10 @@
   tasks:        
     - name: Verificar o estado do repositório Git
       shell: |
-         cd /var/www/html/iptell/ && git status 
+         cd /var/www/html/iptell/ && git status && git checkout master
       register: git_status
-      ignore_errors: yes
-
-    - name: Exibir comando e saída da verificação do estado do repositório
-      debug:
-        msg: |
-          Comando: git status
-          Saída: "{{ git_status.stdout }}"
-      ignore_errors: yes
-
-    - name: Verificar se o branch é master e está atualizado
-      set_fact:
-        branch_up_to_date: >
-          {% if "On branch master" in git_status.stdout and
-             "Your branch is up to date with 'origin/master'" in git_status.stdout %}
-            true
-          {% else %}
-            false
-          {% endif %}
-
-    - name: Realizar checkout Master se necessário
-      shell: git checkout master
-      args:
-        chdir: /var/www/html/iptell/
-      when: not branch_up_to_date
-      register: final_checkout
-      ignore_errors: yes
 
     - name: Exibir comando e saída do checkout master
       debug:
-        msg: |
-          Comando: git checkout master
-          Saída: "{{ final_checkout.stdout }}"
-      when: not branch_up_to_date
+        msg: 
+          Saída: "{{ git_status.stdout }}"
