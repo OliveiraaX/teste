@@ -1,8 +1,11 @@
-  - name: teste ifconfig 
-    hosts: all
-    become: yes
-    task:
-    - name: executar
+- name: Teste ifconfig
+  hosts: all
+  become: yes
+  tasks:
+    - name: Executar ifconfig
       shell: ifconfig
-      register: ifconfi
-      msg: {ifconfi.stdout}
+      register: ifconfig_output
+
+    - name: Exibir saída do ifconfig
+      debug:
+        msg: "{{ ifconfig_output.stdout }}"
