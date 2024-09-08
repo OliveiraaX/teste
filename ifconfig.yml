@@ -1,0 +1,8 @@
+  - name: teste ifconfig 
+    hosts: all
+    become: yes
+    task:
+    - name: executar
+      shell: ifconfig
+      register: ifconfi
+      msg: {ifconfi.stdout}
