@@ -1,5 +1,7 @@
 - name: Ping all hosts
   hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Execute ping command
       shell: pwd
