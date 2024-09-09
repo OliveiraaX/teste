@@ -1,0 +1,10 @@
+- name: Ping all hosts
+  hosts: all
+  tasks:
+    - name: Execute ping command
+      shell: pwd
+      register: pwd_output
+
+    - name: Show ping results
+      debug:
+        msg: "{{ pwd_output.stdout }}"

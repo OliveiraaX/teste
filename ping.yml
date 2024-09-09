@@ -1,8 +1,0 @@
-  - name: ping
-    hosts: all
-    tasks:
-      shell: ping
-      register: ping_
-    - name: mostrar ping
-      debug:
-        msg: {ping_.stdout}
