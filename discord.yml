@@ -1,12 +1,12 @@
 ---
 - name: Enviar uma mensagem para o Discord com os nomes dos servidores
-  hosts: all
+  hosts: localhost
   gather_facts: no
   tasks:
     - name: Recuperar nomes dos servidores
       set_fact:
         server_names: "{{ groups['all'] | map('extract', hostvars, 'server_name') | list }}"
-    
+
     - name: Criar a mensagem com os nomes dos servidores
       set_fact:
         mensagem: "Nomes dos servidores:\n{{ server_names | join('\n') }}"
