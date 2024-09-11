@@ -5,12 +5,8 @@
   tasks:
     - name: Recuperar nomes dos servidores
       set_fact:
-        server_names: "{{ groups['all'] | map('extract', hostvars, 'server_name') | list }}"
-
-    - name: Criar a mensagem com os nomes dos servidores
-      set_fact:
-        mensagem: "Nomes dos servidores:\n{{ server_names | join('\n') }}"
-
+        server_names: "{host}"
+        
     - name: Enviar mensagem para o Discord via webhook
       uri:
         url: "https://discord.com/api/webhooks/1283574115793502270/LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
