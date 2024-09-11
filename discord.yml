@@ -1,9 +1,12 @@
 ---
 - name: Send a message to the Discord channel
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Send a message to Discord via webhook
-      community.general.discord:
-        webhook_id: "1283574115793502270"
-        webhook_token: "LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
-        content: "This is a message from Ansible"
+      uri:
+        url: "https://discord.com/api/webhooks/1283574115793502270/LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: '{"content": "This is a message from Ansible"}'
+        body_format: json
