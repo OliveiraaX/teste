@@ -1,6 +1,6 @@
 ---
 - name: Send a message to the Discord channel
-  hosts: localhost
+  hosts: all
   tasks:
     - name: Send a message to Discord via webhook
       uri:
@@ -8,5 +8,5 @@
         method: POST
         headers:
           Content-Type: "application/json"
-        body: '{"content": "This is a message from Ansible"}'
+        body: '{"content": "Clientes atualizados"}'
         body_format: json
