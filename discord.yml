@@ -1,12 +1,27 @@
 ---
-- name: Send a message to the Discord channel
+- name: Enviar uma mensagem para o Discord com os nomes dos servidores
   hosts: all
+  gather_facts: no
   tasks:
-    - name: Send a message to Discord via webhook
+    - name: Recuperar nomes dos servidores
+      set_fact:
+        server_names: "{{ groups['all'] | map('extract', hostvars, 'server_name') | list }}"
+    
+    - name: Criar a mensagem com os nomes dos servidores
+      set_fact:
+        mensagem: "Nomes dos servidores:\n{{ server_names | join('\n') }}"
+
+    - name: Enviar mensagem para o Discord via webhook
       uri:
         url: "https://discord.com/api/webhooks/1283574115793502270/LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
         method: POST
         headers:
           Content-Type: "application/json"
-        body: '{"content": "Clientes atualizados"}'
+        body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
+        return_content: yes
+      register: resultado
+
+    - name: Exibir resultado
+      debug:
+        msg: "{{ resultado }}"
