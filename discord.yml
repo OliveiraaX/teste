@@ -5,6 +5,10 @@
     ansible_python_interpreter: /usr/bin/python3
   gather_facts: no
   tasks:
+    - name: Recuperar os nomes dos hosts
+      set_fact:
+        server_names: "{{ groups['all'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+
     - name: Criar a mensagem formatada com os nomes dos hosts
       set_fact:
         mensagem: |
@@ -21,5 +25,6 @@
           Content-Type: "application/json"
         body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
-        status_code: [200, 204] 
+        status_code: [200, 204]
+      run_once: true  # Adicionado para garantir que o envio ocorra apenas uma vez
 
