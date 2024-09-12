@@ -1,6 +1,6 @@
 ---
 - name: Enviar uma mensagem para o Discord com os nomes dos hosts
-  hosts: localhost
+  hosts: all
   gather_facts: no
   tasks:
     - name: Recuperar os nomes dos hosts
@@ -14,7 +14,7 @@
     - name: Criar a mensagem formatada com os nomes dos hosts
       set_fact:
         mensagem: |
-          Clientes Atualizados.:
+          Clientes Atualizados:
           {% for name in server_names %}
           - {{ name }}
           {% endfor %}
@@ -32,10 +32,10 @@
         body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
         return_content: yes
+        status_code: [200, 204]  # Aceitar 200 e 204 como códigos de status válidos
       register: resultado
       ignore_errors: yes
 
     - name: Exibir o resultado do envio para verificação
       debug:
         msg: "Resultado do envio: {{ resultado }}"
-      when: resultado is defined
