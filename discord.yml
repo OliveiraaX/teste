@@ -19,12 +19,11 @@
 
     - name: Enviar mensagem para o Discord via webhook
       uri:
-        url: "https://discord.com/api/webhooks/1283574115793502270/LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
+        url: "WEBHOOK"
         method: POST
         headers:
           Content-Type: "application/json"
         body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
         status_code: [200, 204]
-      run_once: true  # Adicionado para garantir que o envio ocorra apenas uma vez
-
+      run_once: true  
