@@ -1,6 +1,6 @@
 ---
 - name: Enviar uma mensagem para o Discord com os nomes dos hosts
-  hosts: localhost
+  hosts: all
   gather_facts: no
   tasks:
     - name: Recuperar os nomes dos hosts
