@@ -3,19 +3,19 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Recuperar todos os nomes dos servidores
+    - name: Recuperar nomes dos servidores
       set_fact:
         server_names: "{{ groups['all'] | map('extract', hostvars, 'server_name') | list }}"
-      
-    - name: Depurar nomes dos servidores
-      debug:
-        msg: "Nomes dos servidores: {{ server_names }}"
 
     - name: Criar a mensagem com os nomes dos servidores
       set_fact:
-        mensagem: "Nomes dos servidores:\n{{ server_names | join('\n') }}"
+        mensagem: |
+          Nomes dos servidores:
+          {% for name in server_names %}
+          {{ name }}
+          {% endfor %}
 
-    - name: Depurar mensagem formatada
+    - name: Exibir mensagem formatada para depuração
       debug:
         msg: "Mensagem formatada: {{ mensagem }}"
 
@@ -30,6 +30,6 @@
         return_content: yes
       register: resultado
 
-    - name: Exibir resultado
+    - name: Exibir resultado do envio
       debug:
         msg: "{{ resultado }}"
