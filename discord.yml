@@ -11,10 +11,14 @@
     - name: Criar a mensagem formatada com os nomes dos hosts
       set_fact:
         mensagem: |
-          Clientes Atualizados:
+          Clientes Atualizados - {{ ansible_date_time.iso8601 }}:
           {% for name in server_names %}
           - {{ name }}
           {% endfor %}
+
+    - name: Mostrar mensagem a ser enviada
+      debug:
+        msg: "{{ mensagem }}"
 
     - name: Enviar mensagem para o Discord via webhook
       uri:
