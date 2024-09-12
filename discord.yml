@@ -3,22 +3,26 @@
   hosts: localhost
   gather_facts: no
   tasks:
-    - name: Recuperar nomes dos servidores
+    - name: Recuperar os nomes dos servidores
       set_fact:
         server_names: "{{ groups['all'] | map('extract', hostvars, 'server_name') | list }}"
-
-    - name: Criar a mensagem com os nomes dos servidores
+    
+    - name: Exibir os nomes dos servidores para verificação
+      debug:
+        msg: "Nomes dos servidores recuperados: {{ server_names }}"
+    
+    - name: Criar a mensagem formatada com os nomes dos servidores
       set_fact:
         mensagem: |
           Nomes dos servidores:
           {% for name in server_names %}
-          {{ name }}
+          - {{ name }}
           {% endfor %}
 
-    - name: Exibir mensagem formatada para depuração
+    - name: Exibir a mensagem formatada para verificação
       debug:
-        msg: "Mensagem formatada: {{ mensagem }}"
-
+        msg: "Mensagem formatada a ser enviada: {{ mensagem }}"
+    
     - name: Enviar mensagem para o Discord via webhook
       uri:
         url: "https://discord.com/api/webhooks/1283574115793502270/LZYF7ssUK4puSIHbK3iXcAU60gDdBWitgnCyAwILhqMU75VMm1EFsn3jNCKFpznutN9i"
@@ -30,6 +34,6 @@
         return_content: yes
       register: resultado
 
-    - name: Exibir resultado do envio
+    - name: Exibir o resultado do envio para verificação
       debug:
-        msg: "{{ resultado }}"
+        msg: "Resultado do envio: {{ resultado }}"
