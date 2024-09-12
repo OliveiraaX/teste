@@ -14,7 +14,7 @@
     - name: Criar a mensagem formatada com os nomes dos hosts
       set_fact:
         mensagem: |
-          Nomes dos hosts:
+          Clientes Atualizados.:
           {% for name in server_names %}
           - {{ name }}
           {% endfor %}
