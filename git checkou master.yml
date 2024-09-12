@@ -4,7 +4,7 @@
   tasks:        
     - name: Verificar o estado do repositório Git
       shell: |
-         cd /var/www/html/iptell/ && git status && git checkout master
+         cd /var/www/html/iptell/ && git status && git checkout beta
       register: git_status
       changed_when: false
       
