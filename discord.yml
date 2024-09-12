@@ -19,7 +19,7 @@
 
     - name: Enviar mensagem para o Discord via webhook
       uri:
-        url: "webhook"
+        url: "https://discord.com/api/webhooks/1283756044165713934/cAQiTGSZmk0OoO-XQQ8BAttIgsSMe-XuBvY647aApx2MI5uktNbPwvuxR03XN-KuhkTd"
         method: POST
         headers:
           Content-Type: "application/json"
