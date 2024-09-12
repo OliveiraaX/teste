@@ -26,7 +26,4 @@
         body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
         status_code: [200, 204] 
-      register: resultado
-      ignore_errors: yes 
 
-pq estaria duplicnado a mensagem?
