@@ -1,6 +1,8 @@
 ---
 - name: Enviar uma mensagem para o Discord com os nomes dos hosts
   hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   gather_facts: no
   tasks:
     - name: Recuperar os nomes dos hosts
