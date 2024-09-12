@@ -15,6 +15,7 @@
       set_fact:
         mensagem: |
           Nomes dos hosts:
+          {% for name in server_names %}
           - {{ name }}
           {% endfor %}
 
