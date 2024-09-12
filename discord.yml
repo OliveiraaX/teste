@@ -6,22 +6,14 @@
     - name: Recuperar os nomes dos hosts
       set_fact:
         server_names: "{{ groups['all'] | map('extract', hostvars, 'inventory_hostname') | list }}"
-
-    - name: Exibir os nomes dos hosts para verificação
-      debug:
-        msg: "Nomes dos hosts recuperados: {{ server_names }}"
-
+        
     - name: Criar a mensagem formatada com os nomes dos hosts
       set_fact:
         mensagem: |
-          Nomes dos hosts:
+          Clientes Atualizados:
           {% for name in server_names %}
           - {{ name }}
           {% endfor %}
-
-    - name: Exibir a mensagem formatada para verificação
-      debug:
-        msg: "Mensagem formatada a ser enviada: {{ mensagem }}"
 
     - name: Enviar mensagem para o Discord via webhook
       uri:
@@ -32,10 +24,6 @@
         body: "{{ {'content': mensagem} | to_json }}"
         body_format: json
         return_content: yes
-        status_code: [200, 204]  # Aceitar 200 e 204 como códigos de status válidos
+        status_code: [200, 204] 
       register: resultado
-      ignore_errors: yes  # Ignorar erros para evitar falhas no playbook
-
-    - name: Exibir o resultado do envio para verificação
-      debug:
-        msg: "Resultado do envio: {{ resultado }}"
+      ignore_errors: yes 
