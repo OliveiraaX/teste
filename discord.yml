@@ -33,7 +33,9 @@
         body_format: json
         return_content: yes
       register: resultado
+      ignore_errors: yes
 
     - name: Exibir o resultado do envio para verificação
       debug:
         msg: "Resultado do envio: {{ resultado }}"
+      when: resultado is defined
