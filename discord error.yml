@@ -1,0 +1,29 @@
+---
+- name: Enviar uma mensagem para o Discord com os nomes dos hosts
+  hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  gather_facts: no
+  tasks:
+    - name: Recuperar os nomes dos hosts
+      set_fact:
+        server_names: "{{ groups['all'] | map('extract', hostvars, 'inventory_hostname') | list }}"
+
+    - name: Criar a mensagem formatada com os nomes dos hosts
+      set_fact:
+        mensagem: |
+          Retorno de Erro:
+          {% for name in server_names %}
+          - {{ name }}
+          {% endfor %}
+
+    - name: Enviar mensagem para o Discord via webhook
+      uri:
+        url: "https://discord.com/api/webhooks/1283756044165713934/cAQiTGSZmk0OoO-XQQ8BAttIgsSMe-XuBvY647aApx2MI5uktNbPwvuxR03XN-KuhkTd"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: "{{ {'content': mensagem} | to_json }}"
+        body_format: json
+        status_code: [200, 204]
+      run_once: true  
