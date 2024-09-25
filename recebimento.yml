@@ -1,11 +1,12 @@
 ---
-- name: teste com JIRA
+- name: Executar comandos em um shell
   hosts: all
+  gather_facts: no
   tasks:
-    - name: mostrar variáveis
+    - name: Executar comando fornecido
       shell: "{{ shell1 }}"
-      register: shell11
+      register: result
 
     - name: Exibir resultado do comando
       debug:
-        msg: "{{ shell11 }}"
+        var: result.stdout
