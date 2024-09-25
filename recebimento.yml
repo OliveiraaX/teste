@@ -5,7 +5,7 @@
 
   tasks:
     - name: Executar comando fornecido
-      shell: "{{ shell1 }}"
+      shell: "{{ comando }}"
       register: result
 
     - name: Exibir resultado do comando
