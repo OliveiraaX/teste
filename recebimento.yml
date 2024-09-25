@@ -3,7 +3,9 @@
   hosts: all
   tasks:
     - name: mostrar variáveis
-      shell: {{ shell1 }}
+      shell: "{{ shell1 }}"
       register: shell11
+
+    - name: Exibir resultado do comando
       debug:
         msg: "{{ shell11 }}"
