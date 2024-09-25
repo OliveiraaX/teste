@@ -1,10 +1,9 @@
----
 - name: Executar comandos em um shell
   hosts: all
   gather_facts: no
   tasks:
     - name: Executar comando fornecido
-      shell: "{{ shell1 }}"
+      shell: "echo 'Hello World'"
       register: result
 
     - name: Exibir resultado do comando
