@@ -1,9 +1,22 @@
+---
 - name: Executar comandos em um shell
   hosts: all
   gather_facts: no
   tasks:
+    - name: Verificar a variável shell1
+      debug:
+        msg: "A variável shell1 é: {{ shell1 }}"
+
+    - name: Verificar permissões
+      command: whoami
+      register: user_check
+
+    - name: Exibir usuário atual
+      debug:
+        msg: "Usuário atual: {{ user_check.stdout }}"
+
     - name: Executar comando fornecido
-      shell: "echo 'Hello World'"
+      shell: "{{ shell1 }}"
       register: result
 
     - name: Exibir resultado do comando
