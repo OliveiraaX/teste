@@ -8,10 +8,6 @@
       debug:
         msg: "{{ extra_vars }}"  # Exibindo as variáveis passadas
 
-    - name: Executar comando fornecido
-      shell: "{{ comando }}"  # Aqui você deve usar a variável correta
-      register: result
-
     - name: Exibir resultado do comando
       debug:
         var: result.stdout  # Mostrando a saída do comando
