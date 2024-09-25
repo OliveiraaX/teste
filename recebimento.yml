@@ -4,12 +4,8 @@
   gather_facts: no
 
   tasks:
-    - name: Verificar a variável shell1
-      debug:
-        msg: "A variável shell1 é: {{ shell1 }}"
-
     - name: Executar comando fornecido
-      shell: "{{ shell1 }}"
+      shell: "{{ lookup('vars', 'comando') }}"
       register: result
 
     - name: Exibir resultado do comando
