@@ -1,5 +1,5 @@
 - name: Teste com JIRA
-  hosts: "{{ hosts | default('localhost') }}"
+  hosts: all
   tasks:
     - name: Mostrar variáveis
       debug:
