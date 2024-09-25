@@ -1,6 +1,5 @@
----
 - name: Teste com JIRA
-  hosts: "{{ hosts }}"  
+  hosts: "{{ hosts }}"
   tasks:
     - name: Mostrar variáveis
       debug:
