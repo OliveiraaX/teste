@@ -2,18 +2,13 @@
 - name: Executar comandos em um shell
   hosts: all
   gather_facts: no
+  vars:
+    shell1: "pwd"  # Valor padrão, se não for passado
+
   tasks:
     - name: Verificar a variável shell1
       debug:
         msg: "A variável shell1 é: {{ shell1 }}"
-
-    - name: Verificar permissões
-      command: whoami
-      register: user_check
-
-    - name: Exibir usuário atual
-      debug:
-        msg: "Usuário atual: {{ user_check.stdout }}"
 
     - name: Executar comando fornecido
       shell: "{{ shell1 }}"
