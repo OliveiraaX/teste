@@ -3,4 +3,4 @@
   tasks:
     - name: Mostrar variáveis
       debug:
-        msg: "O valor da primeira variável é {{ variavel1 }} e o valor da segunda variável é {{ variavel2 }}"
+        msg: "O valor da primeira variável é {{teste1}} e o valor da segunda variável é {{teste5}}"
