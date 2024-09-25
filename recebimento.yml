@@ -2,8 +2,6 @@
 - name: Executar comandos em um shell
   hosts: all
   gather_facts: no
-  vars:
-    shell1: "pwd"  # Valor padrão, se não for passado
 
   tasks:
     - name: Verificar a variável shell1
