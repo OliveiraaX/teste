@@ -4,10 +4,14 @@
   gather_facts: no
 
   tasks:
+    - name: Exibir variáveis extras
+      debug:
+        msg: "{{ extra_vars }}"  # Exibindo as variáveis passadas
+
     - name: Executar comando fornecido
-      shell: "{{ teste }}"
+      shell: "{{ comando }}"  # Aqui você deve usar a variável correta
       register: result
 
     - name: Exibir resultado do comando
       debug:
-        var: result.stdout
+        var: result.stdout  # Mostrando a saída do comando
