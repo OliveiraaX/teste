@@ -1,6 +1,8 @@
 ---
 - name: teste com JIRA
   hosts: all
+  vars_files:
+    - vars.yml
   tasks:
     - name: mostrar variáveis
       shell: "{{ shell1 }}"
