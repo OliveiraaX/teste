@@ -1,6 +1,9 @@
-- name: Teste com JIRA
+---
+- name: teste com JIRA
   hosts: all
   tasks:
-    - name: Mostrar variáveis
+    - name: mostrar variáveis
+      shell: {{ shell1 }}
+      register: shell11
       debug:
-        msg: "O valor da primeira variável é {{teste1}} e o valor da segunda variável é {{teste5}}"
+        msg: "{{ shell11 }}"
