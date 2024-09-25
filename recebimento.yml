@@ -1,0 +1,7 @@
+---
+- name: Teste com JIRA
+  hosts: "{{ hosts }}"  
+  tasks:
+    - name: Mostrar variáveis
+      debug:
+        msg: "O valor da primeira variável é {{ variavel1 }} e o valor da segunda variável é {{ variavel2 }}"
