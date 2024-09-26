@@ -4,6 +4,10 @@
   gather_facts: no
 
   tasks:
+    - name: Verificar se extra_vars foi passado
+      debug:
+        var: extra_vars
+
     - name: Exibir variáveis extras
       debug:
         msg: "{{ extra_vars }}"  # Exibindo as variáveis passadas
